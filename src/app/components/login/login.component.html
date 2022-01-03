@@ -1,0 +1,26 @@
+<header>
+  <div id="brand">CloudInformationSystem</div>
+  <div id="nav"></div>
+</header>
+
+<section class="loginSlogan">
+  <h1>Join to our community and say your storing data troubles GOOD BYE!!</h1>
+</section>
+<section class="loginSection">
+  <form [formGroup]="user" (submit)="signIn()">
+    <div class="form-control">
+      <input type="text" class="error-occured" id="username" formControlName="username" placeholder="Enter your username"/><br/>
+      <p *ngIf="invalidUsername()" class="help-block">The field is required</p>
+    </div>
+
+    <div class="form-control">
+      <input type="password" class="error-occured" id="password" formControlName="password" placeholder="Enter your password"/><i class="fas fa-eye" (click)="uncoverPassword()"></i>
+      <p *ngIf="invalidPassword()" class="help-block">This field is required</p>
+    </div>
+
+    <p class="p-link" routerLink="/recoverPassword">Did you forgot your password?</p>
+    <input type="submit" class="submitLog" value="Sign in"/>
+    <p>or</p>
+    <p class="p-link" routerLink="/register">Create a new account</p>
+  </form>
+</section>

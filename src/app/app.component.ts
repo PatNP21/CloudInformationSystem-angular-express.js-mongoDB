@@ -6,5 +6,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  year_of_prod = 2022;
+  developer = 'Patryk Najda';
   title = 'CIS';
 }
