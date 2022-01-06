@@ -1,3 +1,8 @@
+import { ReceivesComponent } from './components/receives/receives.component';
+import { FilesComponent } from './components/files/files.component';
+import { NotesComponent } from './components/notes/notes.component';
+import { NestesComponent } from './components/nestes/nestes.component';
+import { CISGuard } from './guards/cis.guard';
 import { RecoverPasswordComponent } from './components/recover-password/recover-password.component';
 import { HomeComponent } from './components/home/home.component';
 import { RegisterComponent } from './components/register/register.component';
@@ -10,7 +15,16 @@ const routes: Routes = [
   {path: '', component: WelcomeComponent},
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
-  {path: 'dashboard', component: HomeComponent},
+  {
+    path: 'dashboard',
+    component: HomeComponent,
+    children: [
+      {path: '', component: NestesComponent},
+      {path: 'notes', component: NotesComponent},
+      {path: 'files', component: FilesComponent},
+      {path: 'received', component: ReceivesComponent},
+    ]
+  },
   {path: 'recoverPassword', component: RecoverPasswordComponent}
 ];
 

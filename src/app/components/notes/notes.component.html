@@ -1,0 +1,58 @@
+<section class="notes-interface">
+  <section class="list_of_my_notes">
+    <ul>
+      <li>Obżygać kibel</li>
+      <li>O</li>
+      <li>Obżygać kibel</li>
+      <li>Obżygać kibel</li>
+      <li>Obżygać kibel</li>
+    </ul>
+  </section>
+  <section class="notes_options">
+    <button (click)="openCreate(content)">Create a note</button>
+    <button (click)="openSort(sorting)">Sort notes</button>
+    <button (click)="openShare(sharing)">Share notes</button>
+  </section>
+</section>
+
+<ng-template #content let-modal>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <form>
+      <label for="dateOfBirth">Create new note</label>
+      <div class="input-group">
+        <input id="title_of_note" class="form-control" placeholder="Title"><br/>
+        <textarea id="title_of_note" class="form-control" placeholder="Content"></textarea>
+      </div>
+    </form>
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+</ng-template>
+
+<ng-template #sorting let-modal>
+  <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  <form>
+    <label for="dateOfBirth">Sort notes</label>
+    <div class="input-group">
+      <input id="title_of_note" class="form-control" placeholder="Title"><br/>
+      <textarea id="title_of_note" class="form-control" placeholder="Content"></textarea>
+    </div>
+  </form>
+  <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+</ng-template>
+
+<ng-template #sharing let-modal>
+  <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  <form>
+    <label for="dateOfBirth">Share your notes</label>
+    <div class="input-group">
+      <input id="title_of_note" class="form-control" placeholder="Title"><br/>
+      <textarea id="title_of_note" class="form-control" placeholder="Content"></textarea>
+    </div>
+  </form>
+  <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+</ng-template>

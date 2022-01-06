@@ -20,7 +20,7 @@ export class CisService {
   }
 
   checkLoginStatus() {
-    return this.http.get('http://localhost:2501/login_session')
+    return this.http.get('http://localhost:2501/login_session');
   }
 
   recoverPassword(data: any) {
