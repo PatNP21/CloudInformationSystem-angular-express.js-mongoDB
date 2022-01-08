@@ -1,11 +1,10 @@
 const nodemailer = require('nodemailer')
 const path = require('path')
 
-const sender = nodemailer.createTransport({
-    service: 'CloudInformationSystem',
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
     auth: {
-        user: 'CIS_admin@CloudInformationSystem.com',
-        password: 'admin@@@##20222501'
+        user: 'trolleyqueue99@gmail.com',
+        pass: 'Bailando999!!!'
     }
 })
-
