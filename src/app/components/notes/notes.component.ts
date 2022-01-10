@@ -1,3 +1,5 @@
+import { CisService } from './../../cis.service';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
@@ -10,10 +12,23 @@ import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 export class NotesComponent implements OnInit {
 
   closeResult = '';
+  note!: FormGroup;
+  notes?: any;
 
-  constructor(private modalService: NgbModal) { }
+  constructor(private modalService: NgbModal, private cisS: CisService, private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
+    this.notes = this.cisS.getNotes();
+    console.log(this.notes);
+    this.note = this.formBuilder.group({
+      title: '',
+      content: ''
+    });
+  }
+
+  createNote() {
+    this.cisS.createANote(this.note.value);
+    this.modalService.dismissAll('Save click');
   }
 
   // tslint:disable-next-line:typedef

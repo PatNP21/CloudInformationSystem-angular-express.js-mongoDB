@@ -1,11 +1,7 @@
 <section class="notes-interface">
   <section class="list_of_my_notes">
     <ul>
-      <li>Obżygać kibel</li>
-      <li>O</li>
-      <li>Obżygać kibel</li>
-      <li>Obżygać kibel</li>
-      <li>Obżygać kibel</li>
+
     </ul>
   </section>
   <section class="notes_options">
@@ -21,12 +17,12 @@
     </button>
     <form>
       <label for="dateOfBirth">Create new note</label>
-      <div class="input-group">
-        <input id="title_of_note" class="form-control" placeholder="Title"><br/>
-        <textarea id="title_of_note" class="form-control" placeholder="Content"></textarea>
+      <div class="input-group" [formGroup]="note">
+        <input id="title_of_note" class="form-control" placeholder="Title" formControlName="title"><br/>
+        <textarea id="title_of_note" class="form-control" placeholder="Content" formControlName="content"></textarea>
       </div>
     </form>
-    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+    <button type="button" class="btn btn-outline-dark" (click)="createNote()">Save</button>
 </ng-template>
 
 <ng-template #sorting let-modal>

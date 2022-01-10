@@ -1,0 +1,11 @@
+.my_storage {
+  width:90%;
+  margin: 2vh 0 0 4%;
+  border:1px solid black;
+  height:80%;
+  overflow-y: scroll;
+}
+
+#fileinput {
+  display:none;
+}

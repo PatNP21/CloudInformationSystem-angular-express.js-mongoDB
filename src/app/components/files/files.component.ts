@@ -1,3 +1,4 @@
+import { CisService } from './../../cis.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,9 +8,25 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FilesComponent implements OnInit {
 
-  constructor() { }
+  constructor(private cisS: CisService) { }
+
+  file: any;
+  filesList: any;
 
   ngOnInit(): void {
+    this.filesList = this.cisS.getFiles().subscribe(() => {
+      console.log(this.filesList);
+    })
+  }
+
+  getFiles(event: any) {
+    this.file = URL.createObjectURL(event.target.files[0]);
+  }
+
+  uploadFiles() {
+    if(this.file !== null) {
+      this.cisS.uploadData(this.file);
+    }
   }
 
 }

@@ -98,3 +98,9 @@ section {
   position: fixed;
   top:10vh;
 }
+
+.bi .bi-bell{
+  width:8vw;
+  height:100%;
+  color:white;
+}

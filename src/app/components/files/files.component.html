@@ -1,1 +1,11 @@
-<p>files works!</p>
+<section class="my_storage">
+
+</section>
+<section>
+  <label for="fileinput">Add a file</label>
+  <input id="fileinput" type="file" (change)="getFiles($event)"/>
+  <section class="list_to_send">
+
+  </section>
+  <button (click)="uploadFiles()">Submit to CloudInformationSystem</button>
+</section>

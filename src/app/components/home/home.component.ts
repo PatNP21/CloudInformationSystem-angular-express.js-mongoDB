@@ -1,3 +1,5 @@
+import { CisService } from './../../cis.service';
+import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { Component, OnInit } from '@angular/core';
 
@@ -8,15 +10,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private cookie: CookieService) { }
+  constructor(private cookie: CookieService, private router: Router, private CisS: CisService) { }
   c = this.cookie.get('sessionID');
   userName = 'User';
 
   ngOnInit(): void {
-    if (this.c) {
-      this.userName = String(localStorage.getItem('username'));
-    }
+    this.userName = String(localStorage.getItem('username'));
 
+  }
+
+  logout() {
+    this.cookie.deleteAll();
+    this.router.navigate(['/login']);
   }
 
 
