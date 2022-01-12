@@ -25,8 +25,10 @@ app.use(express.json())
 app.use(bodyParser.json())
 
 const secret = 'dkdjfkgjkfkfjfjkdjk232434532&*899499403'
+const mongoUri = 'mongodb+srv://PatrykNajda:HYLWG8GgbaqWvmnE@cluster0.wxqbw.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
 
-mongoose.connect('mongodb+srv://PatrykNajda:HYLWG8GgbaqWvmnE@cluster0.wxqbw.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',{
+
+mongoose.connect('mongodb+srv://PatrykNajda:HYLWG8GgbaqWvmnE@cluster0.wxqbw.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {
     useNewUrlParser: true,
     //useFindAndModify: false,
     useUnifiedTopology: true
@@ -45,7 +47,7 @@ database.once("open", function() {
 
 //storage
 const storage = new gridfs.GridFsStorage({
-    url: 'mongodb+srv://PatrykNajda:HYLWG8GgbaqWvmnE@cluster0.wxqbw.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
+    url: mongoUri,
     file: (req, file) => {
         return new Promise((resolve, reject) => {
             crypto.randomBytes(16, (err, buf) => {
@@ -75,28 +77,28 @@ app.get('/', (req, res) => {
 
 //register new user
 app.post('/register_user', (req, res) => {
-    const {firstName, lastName, email, username, password: passwordWithoutHash} = req.body
-    bcrypt.hash(passwordWithoutHash, 15, (err, passwordHashed) => {
+    const {firstName, lastName, email, username, password} = req.body
+    /*bcrypt.hash(passwordWithoutHash, 15, (err, passwordHashed) => {
         if (err) {
             res.json({ Error: err })
-        }
+        }}*/
 
-        const user = new userModel({
-            firstName,
-            lastName,
-            email,
-            username,
-            password: passwordHashed
-        })
-
-        user.save().then(() => {
-            res.status(201).json({ message: 'OK!' })
-            console.log(user)
-        }).catch(err => {
-            res.json({ message: 'Something went wrong!' })
-        })
-
+    const user = new userModel({
+        firstName,
+        lastName,
+        email,
+        username,
+        password
     })
+
+    user.save().then(() => {
+        res.status(201).json({ message: 'OK!' })
+        console.log(user)
+    }).catch(err => {
+        res.json({ message: 'Something went wrong!' })
+    })
+
+    
 
 })
 
@@ -161,8 +163,7 @@ app.post('/home/addNote', async (req, res) => {
 
 app.get('/home/getNotes', (req, res) => {
     noteModel.find().then((data) => {
-        res.json({ message: 'Zwrócono poprawnie notatki',
-                   data: data})
+        res.json({ data: data })
         console.log(data)
     }).catch(err => console.log(err))
 })
