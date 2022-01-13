@@ -168,9 +168,8 @@ app.get('/home/getNotes', (req, res) => {
     }).catch(err => console.log(err))
 })
 
-app.post('/home/upload', (req, res) => {
+app.post('/home/upload', upload.single("file"), (req, res) => {
     try {
-        upload.single("file")
         res.json({
             message: 'upload!',
         })
