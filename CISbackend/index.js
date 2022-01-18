@@ -7,12 +7,15 @@ const cookieParser = require('cookie-parser')
 const bcrypt = require('bcryptjs')
 const nodemailer = require('nodemailer')
 const transNM = require('./sendEmail')
+const fs = require('fs')
 const crypto = require('crypto')
 const path = require('path')
 const multer = require('multer')
-const gridfs = require('multer-gridfs-storage')
-const userModel = require('./models')
-const noteModel = require('./notemodel')
+const Grid = require('gridfs-stream')
+const {GridFsStorage} = require('multer-gridfs-storage')
+const fileupload = require("express-fileupload")
+const {newUser, newNote} = require('./models')
+//const noteModel = require('./notemodel')
 
 const app = express()
 
@@ -23,6 +26,9 @@ app.use(cors())
 app.use(cookieParser())
 app.use(express.json())
 app.use(bodyParser.json())
+//app.use(bodyParser.urlencoded())
+app.use(bodyParser.urlencoded({extended: true}))
+app.use(fileupload())
 
 const secret = 'dkdjfkgjkfkfjfjkdjk232434532&*899499403'
 const mongoUri = 'mongodb+srv://PatrykNajda:HYLWG8GgbaqWvmnE@cluster0.wxqbw.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
@@ -40,13 +46,12 @@ const database = mongoose.connection
 database.on("error", console.error.bind(console, "Connection error occured!"))
 database.once("open", function() {
     console.log("The database has been connected successfully")
-    gridfsStorage = new mongoose.mongo.GridFSBucket(database.db, {
-        bucketName: 'uploads'
-    })
+    gridfsStorage = Grid(database.db, mongoose.mongo)
+    gridfsStorage.collection('uploads')
 })
 
 //storage
-const storage = new gridfs.GridFsStorage({
+const storage = new GridFsStorage({
     url: mongoUri,
     file: (req, file) => {
         return new Promise((resolve, reject) => {
@@ -66,9 +71,7 @@ const storage = new gridfs.GridFsStorage({
     }
 })
 
-const upload = multer({
-    storage
-})
+const upload = multer({storage})
 
 //main GET
 app.get('/', (req, res) => {
@@ -83,7 +86,7 @@ app.post('/register_user', (req, res) => {
             res.json({ Error: err })
         }}*/
 
-    const user = new userModel({
+    const user = new newUser({
         firstName,
         lastName,
         email,
@@ -103,7 +106,7 @@ app.post('/register_user', (req, res) => {
 })
 
 app.post('/login', bodyParser.json([]), async (req, res) => {
-    await userModel.findOne({username: req.body.username, password: req.body.password}).then(user => {
+    await newUser.findOne({username: req.body.username, password: req.body.password}).then(user => {
         
         if(user) {
             console.log(user.password, req.body.password)
@@ -127,7 +130,7 @@ app.get('/logout', (req, res) => {
 
 app.get('/me', async (req, res) => {
     try {
-        const user = await userModel.findById(req.body._id)
+        const user = await newUser.findById(req.body._id)
         res.json(user)
     } catch(err) {
         res.send({message: 'Sth went wrong!'})
@@ -135,7 +138,7 @@ app.get('/me', async (req, res) => {
 })
 
 app.post('/recoverPassword', async (req, res) => {
-    await userModel.findOne({email: req.body.email}).then(
+    await newUser.findOne({email: req.body.email}).then(
         res => {
 
         }
@@ -147,7 +150,7 @@ app.post('/recoverPassword', async (req, res) => {
 app.post('/home/addNote', async (req, res) => {
     const { title, content } = req.body
 
-    const note = new noteModel({
+    const note = new newNote({
         title, 
         content
     })
@@ -162,18 +165,26 @@ app.post('/home/addNote', async (req, res) => {
 })
 
 app.get('/home/getNotes', (req, res) => {
-    noteModel.find().then((data) => {
+    newNote.find().populate('author').then((data) => {
         res.json({ data: data })
         console.log(data)
     }).catch(err => console.log(err))
 })
 
-app.post('/home/upload', upload.single("file"), (req, res) => {
+app.post('/home/upload', upload.single('file'), (req, res) => {
     try {
-        res.json({
-            message: 'upload!',
-        })
-        console.log("File is uploaded!")
+        if(!req.files) {
+            console.log('File is undefined')
+            return
+        } else {
+            const file = req.files.file
+            console.log("File is uploaded!")
+            console.log({message: file})
+            res.json({
+                file: req.file
+            })
+        }
+        
     } catch(err) {
         res.status(400).json({
             message: err
@@ -182,14 +193,13 @@ app.post('/home/upload', upload.single("file"), (req, res) => {
 })
 
 app.get('/home/files', (req, res) => {
-    const files = gridfsStorage.find().toArray((err, files) => {
+    /*const files = GridFsStorage.find().toArray((err, files) => {
         if (!files || files.length === 0) {
             return res.status(404).json({
                 message: 'No files exist'
             })
         }
-        gridfsStorage.openDownloadStream().pipe(res)
-    })
+    })*/
 })
 
 

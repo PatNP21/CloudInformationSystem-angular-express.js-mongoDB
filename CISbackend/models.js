@@ -18,6 +18,27 @@ const NewUserSchema = new mongoose.Schema({
     }
 })
 
-const newUser = mongoose.model('newUser', NewUserSchema)
+const newUser = mongoose.model("newUser", NewUserSchema)
 
-module.exports = newUser
+const NoteSchema = new mongoose.Schema({
+    title: {
+        type: String
+    },
+    content: {
+        type: String
+    },
+    author: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "newUser"
+    }],
+    date: {
+        type: Date,
+        default: new Date(Date.now())
+    }
+})
+
+const newNote = mongoose.model('newNote', NoteSchema)
+
+
+
+module.exports = {newNote, newUser}
